@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.kuliginstepan.dadata.client.domain.AdditionalProps;
 import com.kuliginstepan.dadata.client.domain.Suggestion;
 import com.kuliginstepan.dadata.client.domain.address.Address;
+import com.kuliginstepan.dadata.client.domain.address.AddressSuggestion;
 import com.kuliginstepan.dadata.client.json.LocalDateDeserializer;
 import java.time.LocalDate;
 import java.util.List;
@@ -21,7 +22,7 @@ import lombok.Value;
 @EqualsAndHashCode(callSuper = true)
 public class Organization extends AdditionalProps {
 
-    Suggestion<Address> address;
+    AddressSuggestion address;
     String source;
     String qc;
     @JsonAlias("branch_count")

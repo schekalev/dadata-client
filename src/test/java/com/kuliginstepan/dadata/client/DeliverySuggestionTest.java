@@ -5,13 +5,14 @@ import static org.junit.Assert.assertNotNull;
 
 import com.kuliginstepan.dadata.client.domain.Suggestion;
 import com.kuliginstepan.dadata.client.domain.delivery.Delivery;
+import com.kuliginstepan.dadata.client.domain.delivery.DeliverySuggestion;
 import org.junit.Test;
 
 public class DeliverySuggestionTest {
 
     @Test
     public void findDeliveryByIdTest() {
-        Suggestion<Delivery> suggestion = TestUtils.CLIENT.findDeliveryById("3100400100000").block();
+        DeliverySuggestion suggestion = TestUtils.CLIENT.findDeliveryById("3100400100000");
 
         assertNotNull(suggestion);
 

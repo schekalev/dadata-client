@@ -11,11 +11,8 @@ import static org.junit.Assert.assertTrue;
 
 import com.kuliginstepan.dadata.client.domain.OrganizationStatus;
 import com.kuliginstepan.dadata.client.domain.Suggestion;
-import com.kuliginstepan.dadata.client.domain.organization.BranchType;
-import com.kuliginstepan.dadata.client.domain.organization.FindOrganizationByIdRequest;
-import com.kuliginstepan.dadata.client.domain.organization.Organization;
-import com.kuliginstepan.dadata.client.domain.organization.OrganizationRequestBuilder;
-import com.kuliginstepan.dadata.client.domain.organization.OrganizationType;
+import com.kuliginstepan.dadata.client.domain.organization.*;
+
 import java.util.List;
 import org.junit.Test;
 
@@ -23,8 +20,8 @@ public class OrganizationSuggestionTest {
 
     @Test
     public void suggestOrganizationByNameTest() {
-        List<Suggestion<Organization>> suggestions = CLIENT
-            .suggestOrganization(OrganizationRequestBuilder.create("Сбербанк").build()).collectList().block();
+        List<OrganizationSuggestion> suggestions = CLIENT
+            .suggestOrganization(OrganizationRequestBuilder.create("Сбербанк").build());
 
         assertNotNull(suggestions);
         assertFalse(suggestions.isEmpty());
@@ -34,8 +31,8 @@ public class OrganizationSuggestionTest {
 
     @Test
     public void suggestOrganizationByInnTest() {
-        List<Suggestion<Organization>> suggestions = CLIENT
-            .suggestOrganization(OrganizationRequestBuilder.create("2222808138").build()).collectList().block();
+        List<OrganizationSuggestion> suggestions = CLIENT
+            .suggestOrganization(OrganizationRequestBuilder.create("2222808138").build());
 
         assertNotNull(suggestions);
         assertFalse(suggestions.isEmpty());
@@ -45,9 +42,8 @@ public class OrganizationSuggestionTest {
 
     @Test
     public void suggestOrganizationByFioTest() {
-        List<Suggestion<Organization>> suggestions = CLIENT
-            .suggestOrganization(OrganizationRequestBuilder.create("Коварский Станислав Альбертович").build())
-            .collectList().block();
+        List<OrganizationSuggestion> suggestions = CLIENT
+            .suggestOrganization(OrganizationRequestBuilder.create("Коварский Станислав Альбертович").build());
 
         assertThat(suggestions)
             .hasSize(7)
@@ -57,9 +53,8 @@ public class OrganizationSuggestionTest {
 
     @Test
     public void suggestOrganizationWithLocationTest() {
-        List<Suggestion<Organization>> suggestions = CLIENT
-            .suggestOrganization(OrganizationRequestBuilder.create("тануки").location("77").build()).collectList()
-            .block();
+        List<OrganizationSuggestion> suggestions = CLIENT
+            .suggestOrganization(OrganizationRequestBuilder.create("тануки").location("77").build());
 
         List<String> regionKladrIds = getDistinctList(it -> it.getData().getAddress().getData().getRegionKladrId(),
             suggestions);
@@ -73,10 +68,9 @@ public class OrganizationSuggestionTest {
 
     @Test
     public void suggestOrganizationWithStatusTest() {
-        List<Suggestion<Organization>> suggestions = CLIENT
+        List<OrganizationSuggestion> suggestions = CLIENT
             .suggestOrganization(
-                OrganizationRequestBuilder.create("сбербанк").status(OrganizationStatus.ACTIVE).build()).collectList()
-            .block();
+                OrganizationRequestBuilder.create("сбербанк").status(OrganizationStatus.ACTIVE).build());
 
         List<OrganizationStatus> statuses = getDistinctList(it -> it.getData().getState().getStatus(), suggestions);
         assertNotNull(suggestions);
@@ -88,11 +82,9 @@ public class OrganizationSuggestionTest {
 
     @Test
     public void suggestOrganizationWithTypeTest() {
-        List<Suggestion<Organization>> suggestions = CLIENT
+        List<OrganizationSuggestion> suggestions = CLIENT
             .suggestOrganization(
-                OrganizationRequestBuilder.create("сбербанк").organizationType(OrganizationType.LEGAL).build())
-            .collectList()
-            .block();
+                OrganizationRequestBuilder.create("сбербанк").organizationType(OrganizationType.LEGAL).build());
 
         List<OrganizationType> types = getDistinctList(it -> it.getData().getType(), suggestions);
 
@@ -105,10 +97,9 @@ public class OrganizationSuggestionTest {
 
     @Test
     public void suggestOrganizationWithBranchTypeTest() {
-        List<Suggestion<Organization>> suggestions = CLIENT
+        List<OrganizationSuggestion> suggestions = CLIENT
             .suggestOrganization(
-                OrganizationRequestBuilder.create("пао сбербанк").branchType(BranchType.MAIN).build()).collectList()
-            .block();
+                OrganizationRequestBuilder.create("пао сбербанк").branchType(BranchType.MAIN).build());
 
         List<BranchType> types = getDistinctList(it -> it.getData().getBranchType(), suggestions);
 
@@ -121,10 +112,9 @@ public class OrganizationSuggestionTest {
 
     @Test
     public void rangingSuggestOrganizationTest() {
-        List<Suggestion<Organization>> suggestions = CLIENT
+        List<OrganizationSuggestion> suggestions = CLIENT
             .suggestOrganization(
-                OrganizationRequestBuilder.create("ип муромова").locationBoost("56").build()).collectList()
-            .block();
+                OrganizationRequestBuilder.create("ип муромова").locationBoost("56").build());
 
         assertNotNull(suggestions);
         assertFalse(suggestions.isEmpty());
@@ -133,23 +123,22 @@ public class OrganizationSuggestionTest {
 
     @Test
     public void findOrganizationByInnTest() {
-        Suggestion<Organization> organization = CLIENT.findOrganizationById("7725002343").block();
+        OrganizationSuggestion organization = CLIENT.findOrganizationById("7725002343");
 
         assertEquals("7725002343", organization.getData().getInn());
     }
 
     @Test
     public void findOrganizationByOgrnTest() {
-        Suggestion<Organization> organization = CLIENT.findOrganizationById("1027739468877").block();
+        OrganizationSuggestion organization = CLIENT.findOrganizationById("1027739468877");
 
         assertEquals("1027739468877", organization.getData().getOgrn());
     }
 
     @Test
     public void findOrganizationByInnAndKppTest() {
-        Suggestion<Organization> suggestion = CLIENT
-            .findOrganizationById(FindOrganizationByIdRequest.builder().query("7702070139").kpp("526002001").build())
-            .block();
+        OrganizationSuggestion suggestion = CLIENT
+            .findOrganizationById(FindOrganizationByIdRequest.builder().query("7702070139").kpp("526002001").build());
 
         assertEquals("7702070139", suggestion.getData().getInn());
         assertEquals("526002001", suggestion.getData().getKpp());

@@ -9,10 +9,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import com.kuliginstepan.dadata.client.domain.Suggestion;
-import com.kuliginstepan.dadata.client.domain.address.Address;
-import com.kuliginstepan.dadata.client.domain.address.AddressRequestBuilder;
-import com.kuliginstepan.dadata.client.domain.address.Bound;
-import com.kuliginstepan.dadata.client.domain.address.FilterProperty;
+import com.kuliginstepan.dadata.client.domain.address.*;
+
 import java.util.List;
 import org.junit.Test;
 
@@ -21,9 +19,9 @@ public class AddressSuggestionTest {
 
     @Test
     public void suggestAddressTest() {
-        List<Suggestion<Address>> suggestions = CLIENT
+        List<AddressSuggestion> suggestions = CLIENT
             .suggestAddress(AddressRequestBuilder.create("москва серпуховская")
-                .build()).collectList().block();
+                .build());
 
         assertNotNull(suggestions);
         assertFalse(suggestions.isEmpty());
@@ -32,8 +30,8 @@ public class AddressSuggestionTest {
 
     @Test
     public void suggestAddressWithLocationsTest() {
-        List<Suggestion<Address>> suggestions = CLIENT.suggestAddress(AddressRequestBuilder.create("Ватутина")
-            .location(FilterProperty.KLADR_ID, "65").build()).collectList().block();
+        List<AddressSuggestion> suggestions = CLIENT.suggestAddress(AddressRequestBuilder.create("Ватутина")
+            .location(FilterProperty.KLADR_ID, "65").build());
 
         assertNotNull(suggestions);
         assertFalse(suggestions.isEmpty());
@@ -43,9 +41,9 @@ public class AddressSuggestionTest {
 
     @Test
     public void suggestAddressWithLocationsTest1() {
-        List<Suggestion<Address>> suggestions = CLIENT.suggestAddress(AddressRequestBuilder.create("берлин")
+        List<AddressSuggestion> suggestions = CLIENT.suggestAddress(AddressRequestBuilder.create("берлин")
             .location(FilterProperty.COUNTRY, "*")
-            .build()).collectList().block();
+            .build());
 
         assertNotNull(suggestions);
         assertFalse(suggestions.isEmpty());
@@ -54,9 +52,9 @@ public class AddressSuggestionTest {
 
     @Test
     public void suggestAddressWithLocationsTest2() {
-        List<Suggestion<Address>> suggestions = CLIENT.suggestAddress(AddressRequestBuilder.create("башко")
+        List<AddressSuggestion> suggestions = CLIENT.suggestAddress(AddressRequestBuilder.create("башко")
             .location(FilterProperty.REGION_TYPE_FULL, "республика")
-            .build()).collectList().block();
+            .build());
 
         List<String> regionTypes = getDistinctList(it -> it.getData().getRegionType(), suggestions);
 
@@ -69,10 +67,10 @@ public class AddressSuggestionTest {
 
     @Test
     public void suggestAddressWithLocationsTest3() {
-        List<Suggestion<Address>> suggestions = CLIENT.suggestAddress(AddressRequestBuilder.create("Турчанинов")
+        List<AddressSuggestion> suggestions = CLIENT.suggestAddress(AddressRequestBuilder.create("Турчанинов")
             .location(FilterProperty.REGION, "Москва")
             .restrictValue()
-            .build()).collectList().block();
+            .build());
 
         assertNotNull(suggestions);
         assertFalse(suggestions.isEmpty());
@@ -82,10 +80,10 @@ public class AddressSuggestionTest {
 
     @Test
     public void suggestAddressWithLocationsTest4() {
-        List<Suggestion<Address>> suggestions = CLIENT.suggestAddress(AddressRequestBuilder.create("Абрикосовая")
+        List<AddressSuggestion> suggestions = CLIENT.suggestAddress(AddressRequestBuilder.create("Абрикосовая")
             .location(FilterProperty.REGION, "Самарская")
             .location(FilterProperty.CITY, "Тольятти")
-            .build()).collectList().block();
+            .build());
 
         List<String> regions = getDistinctList(it -> it.getData().getRegion(), suggestions);
 
@@ -98,14 +96,14 @@ public class AddressSuggestionTest {
 
     @Test
     public void suggestAddressWithLocationsTest5() {
-        List<Suggestion<Address>> suggestions = CLIENT.suggestAddress(AddressRequestBuilder.create("ростов рассветная")
+        List<AddressSuggestion> suggestions = CLIENT.suggestAddress(AddressRequestBuilder.create("ростов рассветная")
             .location(FilterProperty.REGION, "адыгея")
             .location(FilterProperty.REGION, "астраханская")
             .location(FilterProperty.REGION, "волгоградская")
             .location(FilterProperty.REGION, "калмыкия")
             .location(FilterProperty.REGION, "краснодарский")
             .location(FilterProperty.REGION, "ростовская")
-            .build()).collectList().block();
+            .build());
 
         List<String> regions = getDistinctList(it -> it.getData().getRegion(), suggestions);
 
@@ -118,8 +116,8 @@ public class AddressSuggestionTest {
 
     @Test
     public void suggestAddressWithLocationsTest6() {
-        List<Suggestion<Address>> suggestions = CLIENT.suggestAddress(AddressRequestBuilder.create("Ботаническая")
-            .location(FilterProperty.REGION, "москва").build()).collectList().block();
+        List<AddressSuggestion> suggestions = CLIENT.suggestAddress(AddressRequestBuilder.create("Ботаническая")
+            .location(FilterProperty.REGION, "москва").build());
 
         List<String> cityKladrIds = getDistinctList(it -> it.getData().getCityKladrId(), suggestions);
 
@@ -132,9 +130,8 @@ public class AddressSuggestionTest {
 
     @Test
     public void suggestAddressWithLocationsTest7() {
-        List<Suggestion<Address>> suggestions = CLIENT.suggestAddress(AddressRequestBuilder.create("московское шоссе")
-            .location(FilterProperty.CITY_FIAS_ID, "110d6ad9-0b64-47cf-a2ee-7e935228799c").build()).collectList()
-            .block();
+        List<AddressSuggestion> suggestions = CLIENT.suggestAddress(AddressRequestBuilder.create("московское шоссе")
+            .location(FilterProperty.CITY_FIAS_ID, "110d6ad9-0b64-47cf-a2ee-7e935228799c").build());
 
         List<String> cityFiasIds = getDistinctList(it -> it.getData().getCityFiasId(), suggestions);
 
@@ -147,12 +144,12 @@ public class AddressSuggestionTest {
 
     @Test
     public void granularAddressSuggestionTest() {
-        List<Suggestion<Address>> suggestions = CLIENT.suggestAddress(AddressRequestBuilder.create("тур")
+        List<AddressSuggestion> suggestions = CLIENT.suggestAddress(AddressRequestBuilder.create("тур")
             .location(FilterProperty.REGION, "москва")
             .fromBound(Bound.STREET)
             .toBound(Bound.STREET)
             .restrictValue()
-            .build()).collectList().block();
+            .build());
 
         assertNotNull(suggestions);
         assertFalse(suggestions.isEmpty());
@@ -160,11 +157,11 @@ public class AddressSuggestionTest {
 
     @Test
     public void granularAddressSuggestionTest1() {
-        List<Suggestion<Address>> suggestions = CLIENT.suggestAddress(AddressRequestBuilder.create("12")
+        List<AddressSuggestion> suggestions = CLIENT.suggestAddress(AddressRequestBuilder.create("12")
             .location(FilterProperty.STREET_FIAS_ID, "dd08e4e2-82ff-43b5-81f7-93f59f013974")
             .fromBound(Bound.HOUSE)
             .restrictValue()
-            .build()).collectList().block();
+            .build());
 
         assertNotNull(suggestions);
         assertFalse(suggestions.isEmpty());
@@ -174,10 +171,10 @@ public class AddressSuggestionTest {
 
     @Test
     public void rangingAddressSuggestionTest() {
-        List<Suggestion<Address>> suggestions = CLIENT.suggestAddress(AddressRequestBuilder.create("невский")
+        List<AddressSuggestion> suggestions = CLIENT.suggestAddress(AddressRequestBuilder.create("невский")
             .location(FilterProperty.KLADR_ID, "78")
             .location(FilterProperty.KLADR_ID, "47")
-            .build()).collectList().block();
+            .build());
 
         assertNotNull(suggestions);
         assertFalse(suggestions.isEmpty());
@@ -187,7 +184,7 @@ public class AddressSuggestionTest {
 
     @Test
     public void findAddressByIdTest() {
-        Suggestion<Address> suggestion = CLIENT.findAddressById("5f96fd6b-b3de-451f-b280-8fedf859e683").block();
+        AddressSuggestion suggestion = CLIENT.findAddressById("5f96fd6b-b3de-451f-b280-8fedf859e683");
         assertEquals("5f96fd6b-b3de-451f-b280-8fedf859e683", suggestion.getData().getStreetFiasId());
     }
 }

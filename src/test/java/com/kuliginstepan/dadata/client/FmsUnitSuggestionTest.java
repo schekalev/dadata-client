@@ -9,17 +9,18 @@ import com.kuliginstepan.dadata.client.domain.fms.FmsUnit;
 import com.kuliginstepan.dadata.client.domain.fms.FmsUnitFilter;
 import com.kuliginstepan.dadata.client.domain.fms.FmsUnitRequest;
 import java.util.List;
+
+import com.kuliginstepan.dadata.client.domain.fms.FmsUnitSuggestion;
 import org.junit.Test;
 
 public class FmsUnitSuggestionTest {
 
     @Test
     public void suggestFmsUnitTest() {
-        List<Suggestion<FmsUnit>> suggestions = TestUtils.CLIENT.suggestFmsUnit(
+        List<FmsUnitSuggestion> suggestions = TestUtils.CLIENT.suggestFmsUnit(
             FmsUnitRequest.builder()
                 .query("иванов")
-                .build())
-            .collectList().block();
+                .build());
 
         assertNotNull(suggestions);
         assertFalse(suggestions.isEmpty());
@@ -33,14 +34,13 @@ public class FmsUnitSuggestionTest {
 
     @Test
     public void suggestFmsUnitWithFilterTest() {
-        List<Suggestion<FmsUnit>> suggestions = TestUtils.CLIENT.suggestFmsUnit(
+        List<FmsUnitSuggestion> suggestions = TestUtils.CLIENT.suggestFmsUnit(
             FmsUnitRequest.builder()
                 .query("иванов")
                 .filter(FmsUnitFilter.builder()
                     .regionCode("23")
                     .build())
-                .build())
-            .collectList().block();
+                .build());
 
         assertNotNull(suggestions);
         assertFalse(suggestions.isEmpty());
@@ -50,7 +50,7 @@ public class FmsUnitSuggestionTest {
 
     @Test
     public void findFmsUnitByIdTest() {
-        Suggestion<FmsUnit> suggestion = TestUtils.CLIENT.findFmsUnitById("780-005").block();
+        FmsUnitSuggestion suggestion = TestUtils.CLIENT.findFmsUnitById("780-005");
 
         assertNotNull(suggestion);
 

@@ -11,6 +11,8 @@ import com.kuliginstepan.dadata.client.domain.BasicRequest;
 import com.kuliginstepan.dadata.client.domain.Suggestion;
 import com.kuliginstepan.dadata.client.domain.email.Email;
 import java.util.List;
+
+import com.kuliginstepan.dadata.client.domain.email.EmailSuggestion;
 import org.hamcrest.core.IsCollectionContaining;
 import org.junit.Test;
 
@@ -18,8 +20,7 @@ public class EmailSuggestionTest {
 
     @Test
     public void suggestEmailTest() {
-        List<Suggestion<Email>> suggestions = CLIENT.suggestEmail(new BasicRequest("sacred_grove@", 7)).collectList()
-            .block();
+        List<EmailSuggestion> suggestions = CLIENT.suggestEmail(new BasicRequest("sacred_grove@", 7));
         List<String> locals = getDistinctList(it -> it.getData().getLocal(), suggestions);
         List<String> domain = getDistinctList(it -> it.getData().getDomain(), suggestions);
 

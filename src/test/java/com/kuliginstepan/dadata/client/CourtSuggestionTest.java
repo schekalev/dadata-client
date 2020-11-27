@@ -9,17 +9,18 @@ import com.kuliginstepan.dadata.client.domain.Suggestion;
 import com.kuliginstepan.dadata.client.domain.court.Court;
 import com.kuliginstepan.dadata.client.domain.court.CourtRequest;
 import java.util.List;
+
+import com.kuliginstepan.dadata.client.domain.court.CourtSuggestion;
 import org.junit.Test;
 
 public class CourtSuggestionTest {
 
     @Test
     public void suggestCourtTest() {
-        List<Suggestion<Court>> suggestions = TestUtils.CLIENT.suggestCourt(
+        List<CourtSuggestion> suggestions = TestUtils.CLIENT.suggestCourt(
             CourtRequest.builder()
                 .query("ленинск")
-                .build())
-            .collectList().block();
+                .build());
 
         assertNotNull(suggestions);
         assertFalse(suggestions.isEmpty());
@@ -31,12 +32,10 @@ public class CourtSuggestionTest {
 
     @Test
     public void suggestCourtWithFilterTest() {
-        List<Suggestion<Court>> suggestions = TestUtils.CLIENT.suggestCourt(
+        List<CourtSuggestion> suggestions = TestUtils.CLIENT.suggestCourt(
             CourtRequest.builder()
-                .query("ленинск")
-                .regionCode("58")
-                .build())
-            .collectList().block();
+                .query("ленинск").regionCode("58")
+                .build());
 
         assertNotNull(suggestions);
         assertFalse(suggestions.isEmpty());
@@ -46,7 +45,7 @@ public class CourtSuggestionTest {
 
     @Test
     public void findCourtByIdTest() {
-        Suggestion<Court> suggestion = TestUtils.CLIENT.findCourtById("58MS0001").block();
+        CourtSuggestion suggestion = TestUtils.CLIENT.findCourtById("58MS0001");
 
         assertNotNull(suggestion);
 

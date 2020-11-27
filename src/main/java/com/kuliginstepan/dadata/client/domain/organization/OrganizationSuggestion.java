@@ -1,18 +1,12 @@
 package com.kuliginstepan.dadata.client.domain.organization;
 
-import com.kuliginstepan.dadata.client.domain.DadataResponse;
-import com.kuliginstepan.dadata.client.domain.SuggestionType;
-import org.springframework.core.ParameterizedTypeReference;
+import com.kuliginstepan.dadata.client.domain.Suggestion;
+import lombok.EqualsAndHashCode;
+import lombok.Value;
 
-public class OrganizationSuggestion implements SuggestionType<Organization> {
+@Value
+@EqualsAndHashCode(callSuper = false)
+public class OrganizationSuggestion extends Suggestion {
+    Organization data;
 
-    @Override
-    public ParameterizedTypeReference<DadataResponse<Organization>> getResponseClass() {
-        return new ParameterizedTypeReference<DadataResponse<Organization>>() {};
-    }
-
-    @Override
-    public String getSuggestOperationPrefix() {
-        return "/party";
-    }
 }

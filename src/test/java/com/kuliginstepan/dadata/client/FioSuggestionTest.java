@@ -14,14 +14,15 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import com.kuliginstepan.dadata.client.domain.fio.FioSuggestion;
 import org.junit.Test;
 
 public class FioSuggestionTest {
 
     @Test
     public void suggestFioTest() {
-        List<Suggestion<Fio>> suggestions = CLIENT.suggestFio(FioRequestBuilder.create("Виктор Иван").count(7).build())
-            .collectList().block();
+        List<FioSuggestion> suggestions = CLIENT.suggestFio(FioRequestBuilder.create("Виктор Иван").count(7).build());
 
         assertNotNull(suggestions);
         assertFalse(suggestions.isEmpty());
@@ -30,9 +31,8 @@ public class FioSuggestionTest {
 
     @Test
     public void suggestFioWithPartsTest() {
-        List<Suggestion<Fio>> suggestions = CLIENT
-            .suggestFio(FioRequestBuilder.create("Викто").part(FioPart.NAME).build())
-            .collectList().block();
+        List<FioSuggestion> suggestions = CLIENT
+            .suggestFio(FioRequestBuilder.create("Викто").part(FioPart.NAME).build());
         List<String> surnamesAndPatronymics = suggestions.stream()
             .flatMap(it -> Stream.of(it.getData().getSurname(), it.getData().getPatronymic()))
             .filter(Objects::nonNull)

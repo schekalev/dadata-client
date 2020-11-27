@@ -142,7 +142,7 @@ public class Address extends AdditionalProps {
     String taxOffice;
     @JsonAlias("tax_office_legal")
     String taxOfficeLegal;
-    ZoneId timezone;
+    String timezone;
     @JsonAlias("geo_lat")
     Double geoLat;
     @JsonAlias("geo_lon")

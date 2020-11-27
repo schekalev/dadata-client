@@ -9,17 +9,18 @@ import com.kuliginstepan.dadata.client.domain.Suggestion;
 import com.kuliginstepan.dadata.client.domain.fns.FnsUnit;
 import com.kuliginstepan.dadata.client.domain.fns.FnsUnitRequest;
 import java.util.List;
+
+import com.kuliginstepan.dadata.client.domain.fns.FnsUnitSuggestion;
 import org.junit.Test;
 
 public class FnsUnitSuggestionTest {
 
     @Test
     public void suggestFnsUnitTest() {
-        List<Suggestion<FnsUnit>> suggestions = TestUtils.CLIENT.suggestFnsUnit(
+        List<FnsUnitSuggestion> suggestions = TestUtils.CLIENT.suggestFnsUnit(
             FnsUnitRequest.builder()
                 .query("ленинск")
-                .build())
-            .collectList().block();
+                .build());
 
         assertNotNull(suggestions);
         assertFalse(suggestions.isEmpty());
@@ -32,12 +33,11 @@ public class FnsUnitSuggestionTest {
 
     @Test
     public void suggestFnsUnitWithFilterTest() {
-        List<Suggestion<FnsUnit>> suggestions = TestUtils.CLIENT.suggestFnsUnit(
+        List<FnsUnitSuggestion> suggestions = TestUtils.CLIENT.suggestFnsUnit(
             FnsUnitRequest.builder()
                 .query("ленинск")
                 .regionCode("58")
-                .build())
-            .collectList().block();
+                .build());
 
         assertNotNull(suggestions);
         assertFalse(suggestions.isEmpty());
@@ -47,7 +47,7 @@ public class FnsUnitSuggestionTest {
 
     @Test
     public void findFnsUnitByIdTest() {
-        Suggestion<FnsUnit> suggestion = TestUtils.CLIENT.findFnsUnitById("5836").block();
+        FnsUnitSuggestion suggestion = TestUtils.CLIENT.findFnsUnitById("5836");
 
         assertNotNull(suggestion);
 

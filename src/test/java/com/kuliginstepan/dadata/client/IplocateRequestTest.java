@@ -5,13 +5,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.kuliginstepan.dadata.client.domain.Suggestion;
 import com.kuliginstepan.dadata.client.domain.address.Address;
+import com.kuliginstepan.dadata.client.domain.address.AddressSuggestion;
 import org.junit.Test;
 
 public class IplocateRequestTest {
 
     @Test
     public void iplocateTest() {
-        Suggestion<Address> suggestion = CLIENT.iplocate("46.226.227.20").block();
+        AddressSuggestion suggestion = CLIENT.iplocate("46.226.227.20");
 
         assertThat(suggestion)
             .isNotNull()
@@ -19,7 +20,7 @@ public class IplocateRequestTest {
     }
     @Test
     public void iplocateNullTest() {
-        Suggestion<Address> suggestion = CLIENT.iplocate("46.226.227").block();
+        AddressSuggestion suggestion = CLIENT.iplocate("46.226.227");
 
         assertThat(suggestion)
             .isNull();

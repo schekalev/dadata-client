@@ -1,19 +1,12 @@
 package com.kuliginstepan.dadata.client.domain.fms;
 
-import com.kuliginstepan.dadata.client.domain.DadataResponse;
-import com.kuliginstepan.dadata.client.domain.SuggestionType;
-import org.springframework.core.ParameterizedTypeReference;
+import com.kuliginstepan.dadata.client.domain.Suggestion;
+import lombok.EqualsAndHashCode;
+import lombok.Value;
 
-public class FmsUnitSuggestion implements SuggestionType<FmsUnit> {
-
-    @Override
-    public ParameterizedTypeReference<DadataResponse<FmsUnit>> getResponseClass() {
-        return new ParameterizedTypeReference<DadataResponse<FmsUnit>>() {};
-    }
-
-    @Override
-    public String getSuggestOperationPrefix() {
-        return "/fms_unit";
-    }
+@Value
+@EqualsAndHashCode(callSuper = false)
+public class FmsUnitSuggestion extends Suggestion {
+    FmsUnit data;
 
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.kuliginstepan.dadata.client.domain.AdditionalProps;
 import com.kuliginstepan.dadata.client.domain.Suggestion;
 import com.kuliginstepan.dadata.client.domain.address.Address;
+import com.kuliginstepan.dadata.client.domain.address.AddressSuggestion;
 import com.kuliginstepan.dadata.client.domain.organization.State;
 import java.util.List;
 import lombok.Builder;
@@ -29,7 +30,7 @@ public class Bank extends AdditionalProps {
     @JsonAlias("registration_number")
     String registrationNumber;
     String rkc;
-    Suggestion<Address> address;
+    AddressSuggestion address;
     List<String> phones;
     State state;
 

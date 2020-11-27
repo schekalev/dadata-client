@@ -22,23 +22,25 @@ java {
 }
 
 dependencies {
-    implementation platform('org.springframework.boot:spring-boot-starter-parent:2.2.6.RELEASE')
-    annotationProcessor platform('org.springframework.boot:spring-boot-starter-parent:2.2.6.RELEASE')
-    implementation 'org.springframework.boot:spring-boot'
-    implementation 'org.springframework.boot:spring-boot-autoconfigure'
-    implementation 'org.springframework:spring-webflux'
-    implementation 'io.projectreactor.netty:reactor-netty'
-    implementation 'com.fasterxml.jackson.core:jackson-databind'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
-    implementation 'org.slf4j:slf4j-api'
-    compile 'org.projectlombok:lombok'
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.3'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.3'
+    implementation 'org.slf4j:slf4j-api:1.7.20'
+    implementation 'org.slf4j:slf4j-simple:1.7.20'
+    compile 'com.squareup.okhttp3:okhttp:4.0.0'
+
+    compileOnly 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+    testImplementation 'junit:junit:4.13'
+    testCompile("org.assertj:assertj-core:3.11.1")
+    testCompile 'org.projectlombok:lombok:1.18.12'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
 }
 
 test {
-    useJUnitPlatform()
+    useJUnit()
+    maxHeapSize = '1G'
 }
 
 jacocoTestReport {
@@ -49,3 +51,7 @@ jacocoTestReport {
 }
 
 test.finalizedBy jacocoTestReport
+compileJava.options.encoding = 'UTF-8'
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}

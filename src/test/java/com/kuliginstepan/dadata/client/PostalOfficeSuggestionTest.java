@@ -10,17 +10,18 @@ import com.kuliginstepan.dadata.client.domain.postal.PostalOffice;
 import com.kuliginstepan.dadata.client.domain.postal.PostalOfficeFilter;
 import com.kuliginstepan.dadata.client.domain.postal.PostalOfficeRequest;
 import java.util.List;
+
+import com.kuliginstepan.dadata.client.domain.postal.PostalOfficeSuggestion;
 import org.junit.Test;
 
 public class PostalOfficeSuggestionTest {
 
     @Test
     public void suggestPostalOfficeTest() {
-        List<Suggestion<PostalOffice>> suggestions = TestUtils.CLIENT.suggestPostalOffice(
+        List<PostalOfficeSuggestion> suggestions = TestUtils.CLIENT.suggestPostalOffice(
             PostalOfficeRequest.builder()
                 .query("32")
-                .build())
-            .collectList().block();
+                .build());
 
         assertNotNull(suggestions);
         assertFalse(suggestions.isEmpty());
@@ -33,21 +34,20 @@ public class PostalOfficeSuggestionTest {
 
     @Test
     public void suggestPostalOfficeWithFilterTest() {
-        List<Suggestion<PostalOffice>> suggestions = TestUtils.CLIENT.suggestPostalOffice(
+        List<PostalOfficeSuggestion> suggestions = TestUtils.CLIENT.suggestPostalOffice(
             PostalOfficeRequest.builder()
                 .query("32")
                 .filter(PostalOfficeFilter.builder()
                     .region("Самарская область")
                     .city("Самара")
                     .build())
-                .build())
-            .collectList().block();
+                .build());
 
         assertNotNull(suggestions);
         assertFalse(suggestions.isEmpty());
 
         suggestions.stream()
-            .map(Suggestion::getData).forEach(office -> {
+            .map(PostalOfficeSuggestion::getData).forEach(office -> {
             assertTrue(office.getIndex().contains("32"));
             assertTrue(office.getCity().equalsIgnoreCase("Самара"));
             assertTrue(office.getRegion().equalsIgnoreCase("Самарская область"));
@@ -56,7 +56,7 @@ public class PostalOfficeSuggestionTest {
 
     @Test
     public void findFmsUnitByIdTest() {
-        Suggestion<PostalOffice> suggestion = TestUtils.CLIENT.findPostalOfficeById("157505").block();
+        PostalOfficeSuggestion suggestion = TestUtils.CLIENT.findPostalOfficeById("157505");
 
         assertNotNull(suggestion);
 

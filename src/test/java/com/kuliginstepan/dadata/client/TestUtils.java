@@ -13,7 +13,7 @@ public class TestUtils {
     public static final DadataClient CLIENT = new DadataClientBuilder()
         .token("d0a06c568347cb09905d9a0fe9009380eb6b25d3").build();
 
-    public static <T, R> List<T> getDistinctList(Function<Suggestion<R>, T> mapper, List<Suggestion<R>> suggestions) {
+    public static <T, R extends Suggestion> List<T> getDistinctList(Function<R, T> mapper, List<R> suggestions) {
         return suggestions.stream()
             .map(mapper)
             .distinct()
